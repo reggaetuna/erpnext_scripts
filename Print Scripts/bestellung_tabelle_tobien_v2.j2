@@ -1,0 +1,77 @@
+<!-- Table Heading -->
+<table class="table table-bordered table-condensed">
+<thead>
+<tr>
+   <th>{{ _('Item Code') }}</th>
+   <th>{{ _('Description') }}</th>
+   <th>{{ _('Quantity') }}</th>
+   <th>{{ _('Price') }}</th>
+   <th>{{ _('Amount') }}</th>
+</tr>
+</thead>
+<tbody>
+<!-- Table Content -->
+{% set currency = frappe.get_doc("Currency",doc.currency) %}
+{%- for row in doc.items -%}
+    <tr>
+        <td>
+            {% set item = frappe.get_doc("Item", row.item_code) %}
+            {% if item.variant_of %} 
+                {{ item.variant_of }}
+            {% else %}
+                {{ item.name }}
+            {% endif %}
+        </td>
+        <td>
+            {{ row.description }}<br><br>
+            {% set article = frappe.get_doc("Item", row.item_code) %}
+            <!-- Herkunftsland -->
+            {{  _('Country of Origin') }}:
+            {% if article.country_of_origin %}
+                {{ article.country_of_origin }}
+            {% else %}
+                {{ _('None') }}
+            {% endif %}<br>
+
+            <!-- Lieferantenreferenzen -->
+            {% set article = frappe.get_doc("Item", row.item_code) %}
+            {% for refs in article.supplier_items %}
+                {% if refs.supplier == doc.supplier %}
+                    {{ _('Supplier article number') }}: {{ refs.supplier_part_no }}<br>
+                    {{ _('Supplier article name') }}: {{ refs.supplier_part_name }}
+                {% else %}
+                    {{ _('No') }} {{ _('Supplier') }} {{ _('Reference') }}
+                {% endif %}
+            {% endfor %}<br>
+            
+            <!-- Custom Tariffs -->
+            <br>
+            {{ _('EU Customs Tariff Number') }}: {{ article.customs_tariff_number }}<br>
+            {{ _('CH Customs Tariff Number') }}: {{ article.customs_tariff_number_switzerland }} <br>
+            <br>
+            <!-- Lieferdatum -->
+            {{ _('Delivery Date') }}: {{ frappe.utils.get_datetime(row.expected_delivery_date).strftime('%d.%m.%Y') }}
+        </td>
+        <td>
+            {% if row.weight_per_unit != 0 %}
+            {{ row.qty * row.weight_per_unit }} {{ row.weight_uom }}
+            {% else %}
+            {{ row.qty }}
+            {% endif %}
+        </td>
+        <td  class="price-column">
+            {% if row.uom != row.stock_uom %}
+                {% set rate_in_stock_uom = row.rate * row.conversion_factor %}
+                {{'%0.2f'| format(rate_in_stock_uom|float)  }} {{ currency.symbol }} / {{ row.stock_uom }}<br>
+                {{ row.conversion_factor }} {{ row.stock_uom }} &#8792; 1 {{ row.uom}}
+            {% else %}
+                {{'%0.2f'| format(row.rate|float)  }} {{ currency.symbol }} / {{ row.uom }}
+            {% endif %}
+        </td>
+        <td  class="price-column">{{'%0.2f'| format(row.amount|float) }} {{ currency.symbol }}</td>
+
+        
+    </tr>
+{%- endfor -%}
+</tbody>
+</table>

@@ -1,0 +1,47 @@
+<!-- Table Heading -->
+<table class="table table-bordered table-condensed">
+<thead>
+<tr>
+   <th>Pos</th>
+   <th>Artikelnummer</th>
+   <th>Beschreibung</th>
+   <th>Menge</th>
+   <th>Einheit</th>
+   <th>Einzelpreis</th>
+   <th>Summe</th>
+</tr>
+</thead>
+<tbody>
+<!-- Table Content -->
+{% set currency = frappe.get_doc("Currency",doc.currency) %}
+{%- for row in doc.items -%}
+    <tr>
+        <td>
+            {{ loop.index }}
+        </td>
+        <td>
+            {{ doc.item_code }}
+        </td>
+        <td>
+            {{ doc.description }}
+        </td>
+        <td>
+            {{ row.qty }}
+        </td>
+        <td>
+            {{ row.uom }}
+        </td>
+        <td  class="price-column">
+            {% if row.uom != row.stock_uom %}
+                {% set rate_in_stock_uom = row.rate * row.conversion_factor %}
+                {{'%0.2f'| format(rate_in_stock_uom|float)  | replace('.', ',')  }} {{ currency.symbol }} <br>
+                {{ row.conversion_factor }} &#8792; 1 {{ row.uom}}
+            {% else %}
+                {{'%0.2f'| format(row.rate|float)  | replace('.', ',')  }} {{ currency.symbol }}
+            {% endif %}
+        </td>
+        <td  class="price-column">{{'%0.2f'| format(row.amount|float)  | replace('.', ',') }} {{ currency.symbol }}</td>
+    </tr>
+{%- endfor -%}
+</tbody>
+</table>

@@ -1,0 +1,22 @@
+<div style="text-align: left; padding-left: 25%; margin-top: 16pt;">
+<br>
+<h2>{{ _('Delivery Note') }}</h2>
+<br>
+<span style="font-size:5pt"><b>Bei Schriftwechsel bitte unsere Kom. und Best.Nr. angeben</b></span><br>
+Kommissionsnr.: 1234567890<br>
+{{  _('Posting Date') }}: 
+{% if doc.posting_date %}
+{{ frappe.utils.get_datetime(doc.posting_date).strftime('%d.%m.%Y') }}<br>
+{% else %}
+{{ _('No Data') }}<br>
+{% endif %}
+
+{{ _('Sales Order') }}: {{ doc.items[0].against_sales_order }}<br>
+{% if doc.items[0].against_sales_order %}
+    {% set so = frappe.get_doc("Sales Order", doc.items[0].against_sales_order) %}
+    {{ _('Customer PO') }}: {{ so.po_no }}<br>
+    {% if so.po_date %}
+        {{ _('Customer PO Date') }}: {{ frappe.utils.get_datetime(so.po_date).strftime('%d.%m.%Y') }}<br>
+    {% endif %}
+{% endif %}
+</div>

@@ -1,0 +1,15 @@
+<b>Wir bestellen aufgrund unserer Einkaufsbedingungen.</b><br>
+Lieferung frei Haus / abgeladen / einschl. Verpackung<br>
+
+{{ _('Zahlungsbedingungen') }}: 
+{% if doc.payment_schedule|length > 0  %}
+    {%if doc.payment_schedule[0].payment_term %}
+        {{ doc.payment_schedule[0].payment_term }}<br>
+    {% else %}
+        Keine Zahlungsbedingung<br>
+    {% endif %}
+{% else %}
+    Keine Zahlungsbedingungen<br>
+{% endif %}
+<span style="font-size: 11pt;"><b>Bitte den obigen Liefertermin einhalten!</b></span>
+

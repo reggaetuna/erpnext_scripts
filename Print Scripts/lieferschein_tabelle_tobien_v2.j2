@@ -1,0 +1,79 @@
+<!-- Table Heading -->
+<table class="table table-bordered table-condensed">
+<thead>
+<tr>
+   <th>{{ _('Item Code') }}</th>
+   <th>{{ _('Description') }}</th>
+   <th>{{ _('Quantity') }}</th>
+   <th>{{ _('Total Weight') }}</th>
+</tr>
+</thead>
+<tbody>
+<!-- Table Content -->
+{%- for row in doc.items -%}
+<!-- Tablerow if no TDS -->
+    <tr>{% set article = frappe.get_doc("Item", row.item_code) %}
+        <td>
+            {% if article.variant_of %}
+            {{ article.variant_of }}</td>
+            {% else %}
+            {{ article.name }}
+            {% endif %}
+        <td>
+            {{ row.description }}<br><br>
+            
+            <!-- Herkunftsland -->
+            {{  _('Country of Origin') }}:
+            {% if article.country_of_origin %}
+                {{ article.country_of_origin }}
+            {% else %}
+                {{ _('None') }}
+            {% endif %}<br>
+            
+            <!-- Kundenreferenzen -->
+            {% for refs in article.customer_items %}
+                {% if refs.customer_name == doc.customer %}
+                    {{ _('Your Itemcode') }}: {{ refs.ref_code }}<br>
+                    {% if refs.ref_name %}
+                        {{ _('Your Itemname') }}: {{ refs.ref_name }}<br>
+                    {% endif %}
+                {% else %}
+
+                {% endif %}
+            {% endfor %}<br>
+
+            <!-- Hazards -->
+            {% if article.dangerous %}
+                {{ _('Dangerous') }}: {{ article.dangerous }}<br>
+            {% endif %}
+            {% if article.un_code %}
+                {{ _('UN Code') }}: {{ article.un_code }}<br>
+            {% endif %}
+            {% if article.class %}
+                {{ _('Class') }}: {{ article.class }}<br>
+            {% endif %}
+            {% if article.packaging_group %}
+                {{ _('Packaging Group') }}: {{ article.packaging_group }}
+            {% endif %}
+<br>
+            <!-- Palette/Charge -->
+            {% if row.batch_no %}
+                {% set batch = frappe.get_doc("Batch", row.batch_no) %}
+                {{ _('Charge') }}: {{ row.batch_no }}<br>
+                {% if batch.print_supplier_batch == 1 %}
+                {{ _('Charge') }} {{ _('Producer') }}: {{ batch.supplier_batch_number }}<br>
+                {% endif %}
+                {{ _('Manufacturing Date') }}: {% if batch.manufacturing_date %} {{ frappe.utils.get_datetime(batch.manufacturing_date).strftime('%d.%m.%Y') }}{% endif %}<br>
+                {{ _('BBE') }}: {% if batch.expiry_date %}{{ frappe.utils.get_datetime(batch.expiry_date).strftime('%d.%m.%Y') }}{% endif %}<br>
+            {% endif %}
+            <br>
+            <!-- Lieferdatum -->
+                {{ _('Delivery Date') }}: {{ frappe.utils.get_datetime ( row.delivery_date ) .strftime('%d.%m.%Y') }}
+        </td>
+        <td>{{ row.standard_packing_unit }} á {{ row.packing_unit_weight }} {{ row.stock_uom }}</td>
+        <td style="text-align:right">{{ row.total_weight }} {{ row.weight_uom }}</td>
+        
+    </tr>
+{%- endfor -%}
+</tbody>
+</table>

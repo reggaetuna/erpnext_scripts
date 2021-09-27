@@ -1,0 +1,55 @@
+<!-- Table Heading -->
+<table class="table table-bordered table-condensed">
+<thead>
+<tr>
+   <th>Pos</th>
+   <th>Lieferantenartikelnummer</th>
+   <th>Beschreibung</th>
+   <th>Menge</th>
+   <th>Einheit</th>
+   <th>Einzelpreis</th>
+   <th>Summe</th>
+</tr>
+</thead>
+<tbody>
+<!-- Table Content -->
+{% set currency = frappe.get_doc("Currency",doc.currency) %}
+{%- for row in doc.items -%}
+    <tr>
+        <td>
+            {{ loop.index }}
+        </td>
+        <td>
+            <!-- Lieferantenreferenzen -->
+            {% set article = frappe.get_doc("Item", row.item_code) %}
+            {% for refs in article.supplier_items %}
+                {% if refs.supplier == doc.supplier %}
+                    {{ _('Supplier article number') }}: {{ refs.supplier_part_no }}<br>
+                {% else %}
+                    {{ _('No Data') }}<br>
+                {% endif %}
+            {% endfor %}<br>
+        </td>
+        <td>
+            <code>Über maximale Anzahl an Schriftzeichen im Beschreibungstext muss diskutiert werden.</code>
+        </td>
+        <td>
+            {{ row.qty }}
+        </td>
+        <td>
+            {{ row.uom }}
+        </td>
+        <td  class="price-column">
+            {% if row.uom != row.stock_uom %}
+                {% set rate_in_stock_uom = row.rate * row.conversion_factor %}
+                {{'%0.2f'| format(rate_in_stock_uom|float)  | replace('.', ',')  }} {{ currency.symbol }} <br>
+                {{ row.conversion_factor }} &#8792; 1 {{ row.uom}}
+            {% else %}
+                {{'%0.2f'| format(row.rate|float)  | replace('.', ',')  }} {{ currency.symbol }}
+            {% endif %}
+        </td>
+        <td  class="price-column">{{'%0.2f'| format(row.amount|float)  | replace('.', ',') }} {{ currency.symbol }}</td>
+    </tr>
+{%- endfor -%}
+</tbody>
+</table>

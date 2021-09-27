@@ -1,0 +1,19 @@
+<!-- Adressfeld -->
+<br><br><br><br>
+<div style="text-align: left; padding-left: 25%;">
+{% set address = frappe.get_doc("Address", "Unternehmensadresse Stolz-Abrechnung") %}
+<div style="font-size: 11px;">{{ address.address_title }} - {{ address.pincode }} {{ address.city }}<br></div>
+
+{% if doc.supplier_address %}
+{% set sa = frappe.get_doc("Address",doc.supplier_address) %}
+<b>{{ sa.address_title }}</b><br>
+{{ sa.address_line1 }}<br>
+{% if sa.address_line2 %}
+    {{ sa.address_line2 }}<br>
+{% endif %}
+{{ sa.pincode }} {{ sa.city }}<br>
+{{ sa.country }}
+{% else %}
+No supplier address selected.
+{% endif %}
+</div>

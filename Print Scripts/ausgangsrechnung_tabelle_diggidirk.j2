@@ -1,0 +1,108 @@
+<!-- Table Heading -->
+<table class="table table-bordered table-condensed">
+<thead>
+<tr>
+   <th>{{ _('Item Code') }}</th>
+   <th>{{ _('Description') }}</th>
+   <th>{{ _('Quantity') }}</th>
+   <th>{{ _('Price') }}</th>
+   <th>{{ _('Amount') }}</th>
+</tr>
+</thead>
+<tbody>
+
+<!-- Table Content -->
+{% set currency = frappe.get_doc("Currency",doc.currency) %}
+{%- for row in doc.items -%}
+    <tr>
+        <td>
+            {% set item = frappe.get_doc("Item", row.item_code) %}
+            {% if item.variant_of %} 
+                {{ item.variant_of }}
+            {% else %}
+                {{ item.name }}
+            {% endif %}     
+        </td>
+        <td>
+            {{ row.description }}<br><br>
+
+    	    <!-- Herkunftsland -->
+            {{  _('Country of Origin') }}:
+            {% if item.country_of_origin %}
+                {{ item.country_of_origin }}
+            {% else %}
+                {{ _('None') }}
+            {% endif %}<br>
+
+            <!-- Kundenreferenzen -->
+            {% for refs in item.customer_items %}
+                {% if refs.customer_name == doc.customer %}
+                {{ _('Your Itemcode')}}: {{ refs.ref_code }}<br>
+                {{ _('Your Itemname')}}: {{ refs.ref_name }}
+                {% else %}
+                    
+                {% endif %}
+            {% endfor %}<br>
+            
+            <!-- Palette/Charge -->
+            {% if row.batch_no %}
+                {% set batch = frappe.get_doc("Batch", row.batch_no) %}
+                {{ _('Charge') }}: {{ row.batch_no }}<br>
+                                {% if batch.print_supplier_batch == 1 %}
+                {{ _('Charge') }} {{ _('Producer') }}: {{ batch.supplier_batch_number }}<br>
+                {% endif %}
+                {{ _('Manufacturing Date') }}: {% if batch.manufacturing_date %} {{ frappe.utils.get_datetime(batch.manufacturing_date).strftime('%d.%m.%Y') }}{% endif %}<br>
+                {{ _('BBE') }}: {% if batch.expiry_date %}{{ frappe.utils.get_datetime(batch.expiry_date).strftime('%d.%m.%Y') }}{% endif %}<br>
+            
+
+                <!-- Certificates -->
+                {% if batch.technical_data_sheet %}
+                    {% set tds = frappe.get_doc("Technical Data Sheet", batch.technical_data_sheet) %}
+                    {% if tds.certificates %}
+                        {{ _('Certificates') }}:
+                    {% endif %}
+                    {% for certificate in tds.certificates %}
+                        {% if certificate.certified == "Yes" %}
+                            {{ certificate.type }}
+                            {% if certificate.type == "Organic" %}
+                                {% if country.eu_landwirtschaft %}
+                                    <br><b>CH-Bio-006 "EU-Landwirtschaft"</b>
+                                {% else %}
+                                    <br><b>CH-Bio-006 "Nicht-EU-Landwirtschaft"</b>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}<br>
+                {% else %}
+                    -
+                {% endif %}
+
+            {% endif %}
+        <br>
+        <br>
+        <!-- Lieferdatum -->
+        {{ _('Delivery Date') }}: {{ frappe.utils.get_datetime ( row.delivery_date ) .strftime('%d.%m.%Y') }}
+        </td>
+
+        <td>
+            {% if row.weight_per_unit != 0 %}
+            {{ row.qty * row.weight_per_unit }} {{ row.weight_uom }}
+            {% else %}
+            {{ row.qty }}
+            {% endif %}
+        </td>
+        <td  class="price-column">
+            {% if row.weight_per_unit != 0 %}
+            
+            {% set r = row.rate / row.weight_per_unit %}
+            {{'%0.2f'| format(r|float)  }} {{ currency.symbol }} / {{ row.weight_uom }}
+            
+            {% else %}
+            {{'%0.2f'| format(row.rate|float)  }} {{ currency.symbol }}
+            {% endif %}
+        </td>
+        <td  class="price-column">{{'%0.2f'| format(row.amount|float) }} {{ currency.symbol }}</td>
+    </tr>
+{%- endfor -%}
+</tbody>
+</table>

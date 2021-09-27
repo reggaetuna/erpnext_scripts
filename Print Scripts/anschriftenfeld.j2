@@ -1,0 +1,17 @@
+{% set address = frappe.get_doc("Address", "CRM-LEAD-2020-00011-Abrechnung") %}
+<div class="address">
+<div style="font-size: 6pt;">{{ address.address_title }} - {{ address.address_line1 }} - {{ address.pincode }} {{ address.city }}<br></div>
+{{ doc.customer_name }}</b><br>
+{% if doc.contact_person %}
+{% set contact = frappe.get_doc("Contact", doc.contact_person) %}
+z.H. {{ contact.first_name }} {{ contact.last_name }}<br>
+{% endif %}
+{% if doc.customer_address %}
+{% set caddress = frappe.get_doc("Address", doc.customer_address) %}
+{{ caddress.address_line1 }}<br>
+{{ caddress.pincode }} {{ caddress.city }}<br>
+{{ caddress.country }}
+{% else %}
+{{ _("No Address found") }}
+{% endif %}
+</div>

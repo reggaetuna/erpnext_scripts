@@ -1,0 +1,40 @@
+<table width="100%" style="text-align: right">
+    <tr>
+        <td>
+            <b>{{ _('Sum') }}</b>
+        </td>
+        <td>
+           {% set currency = frappe.get_doc("Currency",doc.currency) %}
+           {{'%0.2f'| format(doc.net_total|float)   }} {{ currency.symbol }}
+        </td>
+    </tr>
+    <tr>
+        {% if doc.taxes %}
+            {% for row in doc.taxes %}
+                <td>
+                    <b>{{ _(row.description) }}</b>
+                </td>
+                <td>
+                    {{'%0.2f'| format(row.tax_amount|float)   }} {{ currency.symbol }}
+                </td>
+            {% endfor %}
+        {% else %}
+            <td>
+                <b>{{ _('Tax') }}</b>
+            </td>
+            <td>
+                 {% set zero = 0.00 %}
+                 {{'%0.2f'| format(zero|float) }} {{ currency.symbol }}
+            </td>
+        {% endif %}
+    </tr>
+    <tr>
+        <td>
+            <b>{{ _('Grand Total') }}</b>
+        </td>
+        <td>
+            {{'%0.2f'| format(doc.grand_total|float)   }} {{ currency.symbol }}
+        </td>
+    </tr>
+</table>
+<br><br>

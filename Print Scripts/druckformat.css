@@ -1,0 +1,65 @@
+.reftable td {
+    padding: 0px !important;
+}
+
+/* add this class to Print Heading in Print Format Builder */
+.top-spacing {
+    padding-top: 6em;
+}
+
+/* add this class to Adress for Letter Window fit (DIN) */
+.address {
+    margin-left: 3mm;
+}
+
+.price-column {
+    width: 25mm;
+}
+
+/* add this classes to letter head footer table */
+.footer-table {
+    font-size: 6pt;
+    padding-bottom: 0mm !important;
+}
+.footer-table>tbody>tr>td {
+    padding: 0 !important;
+    width: 33% !important;
+}
+
+/* add this classes to each of three columns of letter head footer table */
+.column1>td {
+    padding: 0 !important;
+    width: 20% !important;
+}
+
+.column2>td {
+    padding: 0 !important;
+    width: 50% !important;
+}
+
+.column3>td {
+    padding: 0 !important;
+    width: 19% !important;
+}
+
+/* add this class to an empty div underneath the Letter Head Footer for spacing */
+.padding-bot {
+    padding-bottom: 0mm;
+}
+
+.sums-table {
+    width: 70% !important;
+}
+
+.sums-table>tr>td:nth-of-type(1) {
+    width: 35% !important;
+}
+
+/* this class can be added to an informative table below the items and sums */
+.notes-table>tr>td:nth-of-type(1) {
+    width: 30% !important;
+}
+
+.logo {
+    text-align: right;
+}

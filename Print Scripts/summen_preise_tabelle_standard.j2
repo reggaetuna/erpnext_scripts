@@ -1,0 +1,39 @@
+<table width="100%" style="text-align: right">
+    <tr>
+        <td>
+            <b>{{ _('Summe netto') }}</b>
+        </td>
+        <td>
+           {{ frappe.format_value(doc.net_total, {'fieldtype': 'Currency', 'options': doc.currency}, doc) }}
+        </td>
+    </tr>
+    <tr>
+        {% if doc.taxes %}
+            {% for row in doc.taxes %}
+                <td>
+                    <b>{{ _(row.description) }}</b>
+                </td>
+                <td>
+                    {{ frappe.format_value(row.tax_amount, {'fieldtype': 'Currency', 'options': doc.currency}, doc) }}
+                </td>
+            {% endfor %}
+        {% else %}
+            <td>
+                <b>{{ _('Steuern') }}</b>
+            </td>
+            <td>
+                 {% set default = 0.00 %}
+                 {{ frappe.format_value(default, {'fieldtype': 'Currency', 'options': doc.currency}, doc) }}
+            </td>
+        {% endif %}
+    </tr>
+    <tr>
+        <td>
+            <b>{{ _('Gesamtsumme') }}</b>
+        </td>
+        <td>
+            {{ frappe.format_value(doc.grand_total, {'fieldtype': 'Currency', 'options': doc.currency}, doc) }}
+        </td>
+    </tr>
+</table>
+<br><br>
