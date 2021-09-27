@@ -8,7 +8,7 @@ The last but not least category are Restful Scripts, mainly used for Export-/Imp
 
 # Print Scripts
 Metadata Header for files:
-<code>
+
 <!--
 // Title: 
 // Needs another script to function: []
@@ -20,10 +20,9 @@ Metadata Header for files:
 // Licence:
 // Documentation:
 -->
-</code>
 
 # Client Scripts
-<code>
+Metadata Header for files:
 // Title: 
 // Needs another script to function: [nnn_doctype.js, ]
 // Project/Task: 
@@ -33,11 +32,11 @@ Metadata Header for files:
 // Author: 
 // Licence:
 // Documentation: uRL-Link
-</code>
 
 # Server Scripts
+Metadata Header for files:
 <code>
-# Title: 
+# Title: \\
 # Needs another script to function: []
 # Project/Task:
 # Client/Customer: 
@@ -46,7 +45,6 @@ Metadata Header for files:
 # Author:
 # Licence:
 # Documentation: 
-</code>
 
 # Combination Scripts
 
