@@ -7,11 +7,47 @@ In addition to the raw logic and functions in this repository we apply the tueit
 The last but not least category are Restful Scripts, mainly used for Export-/Import or Interfaceintegration Projects.
 
 # Print Scripts
-
+Metadata Header for files:
+```
+<!--
+// Title: 
+// Needs another script to function: []
+// Project/Task: 
+// Client/Customer: 
+// Last Modified: dd.mm.yyyy
+// Version: 0.0.0
+// Author:
+// Licence:
+// Documentation: uRL-Link
+-->
+```
 # Client Scripts
+Metadata Header for files:
+```javascript
+// Title: 
+// Needs another script to function: [nnn_doctype.js, ]
+// Project/Task: 
+// Client/Customer: 
+// Last Modified: dd.mm.yyyy
+// Version: 0.0.0
+// Author: 
+// Licence:
+// Documentation: uRL-Link
+```
 
 # Server Scripts
-
-# Combinational Scripts
+Metadata Header for files:
+```python
+# Title: 
+# Needs another script to function: []
+# Project/Task:
+# Client/Customer: 
+# Last Modified: dd.mm.yyyy
+# Version: 0.0.0
+# Author:
+# Licence:
+# Documentation: uRL-Link
+```
+# Combination Scripts
 
 # Restful Scripts
