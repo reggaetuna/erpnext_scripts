@@ -1,7 +1,19 @@
+<!--
+// Title: Sums and Totals Standard Table
+// Needs another script to function: []
+// Project/Task: 
+// Client/Customer: 
+// Last Modified: 27.09.2021
+// Version: 1.0.0
+// Author: Marius Widmann
+// Licence:
+// Documentation:
+-->
+
 <table width="100%" style="text-align: right">
     <tr>
         <td>
-            <b>{{ _('Summe netto') }}</b>
+            <b>{{ _('Sum pre tax') }}</b>
         </td>
         <td>
            {{ frappe.format_value(doc.net_total, {'fieldtype': 'Currency', 'options': doc.currency}, doc) }}
@@ -19,7 +31,7 @@
             {% endfor %}
         {% else %}
             <td>
-                <b>{{ _('Steuern') }}</b>
+                <b>{{ _('Taxes') }}</b>
             </td>
             <td>
                  {% set default = 0.00 %}
@@ -29,7 +41,7 @@
     </tr>
     <tr>
         <td>
-            <b>{{ _('Gesamtsumme') }}</b>
+            <b>{{ _('Grand Total') }}</b>
         </td>
         <td>
             {{ frappe.format_value(doc.grand_total, {'fieldtype': 'Currency', 'options': doc.currency}, doc) }}

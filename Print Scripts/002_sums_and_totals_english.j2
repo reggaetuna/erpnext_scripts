@@ -1,7 +1,19 @@
+<!-- 
+// Title: Currency symbol position, decimal symbol (dot instead of comma like in german) and precision of numbers is individually handled as like in english standards
+// Needs another script to function: []
+// Project/Task:
+// Client/Customer: K-00147
+// Last Modified: 27.09.2021
+// Version: 1.0.0
+// Author: Marius Widmann
+// Licence:
+// Documentation:
+-->
+
 <table width="100%" style="text-align: right">
     <tr>
         <td>
-            <b>{{ _('Sum') }}</b>
+            <b>{{ _('Sums pre Taxes') }}</b>
         </td>
         <td>
            {% set currency = frappe.get_doc("Currency",doc.currency) %}
@@ -20,7 +32,7 @@
             {% endfor %}
         {% else %}
             <td>
-                <b>{{ _('Tax') }}</b>
+                <b>{{ _('Taxes') }}</b>
             </td>
             <td>
                  {% set zero = 0.00 %}
