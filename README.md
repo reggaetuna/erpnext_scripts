@@ -38,7 +38,7 @@ Metadata Header for files:
 # Server Scripts
 Metadata Header for files:
 ```python
-# Title: \\
+# Title: 
 # Needs another script to function: []
 # Project/Task:
 # Client/Customer: 
