@@ -51,3 +51,6 @@ Metadata Header for files:
 # Combination Scripts
 
 # Restful Scripts
+
+# Chaos Drawer
+Here can all the Scripts be placed that are somewhat not working, used in later projects or other non-functioning and imperfect things.
